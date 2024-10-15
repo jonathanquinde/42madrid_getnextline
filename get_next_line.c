@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jquinde- < jquinde-@student.42madrid.co    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/14 13:05:46 by jquinde-          #+#    #+#             */
-/*   Updated: 2024/10/14 13:05:46 by jquinde-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "get_next_line.h"
 
 char	*read_file(char *buffer, int fd);
@@ -37,20 +25,22 @@ char	*read_file(char *buffer, int fd)
 	if (read_buffer == NULL)
 		return (NULL);
 	n_bytes = read(fd, read_buffer, BUFFER_SIZE);
-	//control de error read
 	while (n_bytes > 0)
 	{
-		printf("n_bytes: %d, read: %s:", n_bytes, read_buffer);
+		printf("---------\nn_bytes: %d, read: |%s|:", n_bytes, read_buffer);
 		for (size_t i = 0; i < n_bytes; i++)
 		{
 			printf(" %d", read_buffer[i]);
 			printf("\n");
-		}
-		
-		printf("%s\n-------\n", buffer);
+		}	
 		buffer = join_and_free(buffer, read_buffer, n_bytes);
+        printf("pato1");
+		printf("-----------\n");
+
+        printf("pato2");
 		if (is_newline(read_buffer))
 		{
+            printf("Hey esto funciona");
 			free(read_buffer);
 			return (buffer);
 		}
@@ -63,12 +53,10 @@ char	*join_and_free(char *old_buffer, char *read_buffer, int n_bytes)
 {
 	char	*new_buffer;
 	size_t	buffer_len;
-	size_t	read_buffer_len;
 	size_t	i;
 
 	i = 0;
 	buffer_len = ft_strlen(old_buffer);
-	read_buffer_len = ft_strlen(read_buffer);
 	new_buffer = malloc(buffer_len + n_bytes + 1);
 	if (new_buffer == NULL)
 		return (NULL);
@@ -77,11 +65,14 @@ char	*join_and_free(char *old_buffer, char *read_buffer, int n_bytes)
 		new_buffer[i] = old_buffer[i];
 		i++;
 	}
-	while (i < BUFFER_SIZE + buffer_len)
+	while (i < n_bytes + buffer_len)
 	{
 		new_buffer[i] = read_buffer[i - buffer_len];
 		i++;
 	}
+    printf("Old Buffer: |%s|, size: %zu\n", old_buffer, buffer_len);
+    new_buffer[i] = 0;
+    printf("New Buffer: |%s|, size: %zu\n", new_buffer, buffer_len + n_bytes);
 	free(old_buffer);
 	return (new_buffer);
 }
@@ -99,7 +90,10 @@ int	is_newline(char *read_buffer)
 	while (*read_buffer)
 	{
 		if (*read_buffer == '\n')
+        {
+            printf("pato3");
 			return (1);
+        }
 		read_buffer++;
 	}
 	return (0);
