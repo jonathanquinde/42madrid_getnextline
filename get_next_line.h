@@ -16,6 +16,9 @@
 #include <stdio.h>
 #include "libft.h"
 
-#define BUFFER_SIZE 1
+#define BUFFER_SIZE 2
 
 char	*get_next_line(int fd);
+int		is_newline(char *read_buffer, int len);
+char	*join_and_free(char *buffer, char *read_buffer, int n_bytes);
+void	print_decima(char *line);

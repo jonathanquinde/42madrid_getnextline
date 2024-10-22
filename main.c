@@ -3,11 +3,18 @@
 int main(void)
 {
     int fd;
+	char	*line;
 
     fd = open("hola.txt", O_RDONLY);
-	for (size_t i = 0; i < 4; i++)
+	line = get_next_line(fd);
+	while (line != NULL)
 	{
-		printf("%s\n", get_next_line(fd));
-		printf("-------------");
-	}	
+		printf("%s", line);
+		//printf("Line: ");
+		//print_decima(line);
+		//printf("\n");
+		free (line);
+		line = get_next_line(fd);
+	}
+	close(fd);
 }
