@@ -6,29 +6,26 @@
 /*   By: jquinde- < jquinde-@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 15:48:37 by jquinde-          #+#    #+#             */
-/*   Updated: 2024/10/31 14:43:56 by jquinde-         ###   ########.fr       */
+/*   Updated: 2024/10/23 15:26:26 by jquinde-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void	join_and_free(char **buffer, char *read_buffer, size_t n_bytes)
+char	*join_and_free(char *old_buffer, char *read_buffer, size_t n_bytes)
 {
 	char	*new_buffer;
 	size_t	buffer_len;
 	size_t	i;
 
 	i = 0;
-	buffer_len = ft_strlen(*buffer);
+	buffer_len = ft_strlen(old_buffer);
 	new_buffer = malloc(buffer_len + n_bytes + 1);
 	if (new_buffer == NULL)
-	{
-		free (*buffer);
-		*buffer = NULL;
-	}
+		return (NULL);
 	while (i < buffer_len)
 	{
-		new_buffer[i] = (*buffer)[i];
+		new_buffer[i] = old_buffer[i];
 		i++;
 	}
 	while (i - buffer_len < n_bytes)
@@ -37,8 +34,8 @@ void	join_and_free(char **buffer, char *read_buffer, size_t n_bytes)
 		i++;
 	}
 	new_buffer[i] = 0;
-	free (*buffer);
-	*buffer = new_buffer;
+	free (old_buffer);
+	return (new_buffer);
 }
 
 void	ft_strncpy(char *dest, char *src, size_t n)

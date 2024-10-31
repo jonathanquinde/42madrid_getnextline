@@ -11,11 +11,10 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
-static int	read_file(int fd, char	**buffer);
-static char	*get_line(char *buffer);
-static char	*trim_read_line(char *buffer);
+int		read_file(int fd, char	**buffer);
+char	*get_linex(char *buffer);
+char	*trim_read_line(char *buffer);
 
 char	*get_next_line(int fd)
 {
@@ -34,19 +33,18 @@ char	*get_next_line(int fd)
 	if (!(is_newline(buffer, ft_strlen(buffer))))
 		read_status = read_file(fd, &buffer);
 	if (read_status == 2)
-		return (free (buffer), buffer = NULL);
-	result = get_line(buffer);
-	if (read_status == 1)
+		return (NULL);
+	result = get_linex(buffer);
+	if (read_status == 0)
 	{
-		*buffer = 0;
+		buffer = trim_read_line(buffer);
 		return (result);
 	}
-	buffer = trim_read_line(buffer);
+	*buffer = 0;
 	return (result);
 }
 
-//0=quedan bytes; 1=ultima linea; 2=error(mallloc, read)
-static int	read_file(int fd, char **buffer)
+int	read_file(int fd, char **buffer)
 {
 	char	*read_buffer;
 	int		n_bytes;
@@ -55,10 +53,10 @@ static int	read_file(int fd, char **buffer)
 	if (read_buffer == NULL)
 		return (2);
 	n_bytes = read(fd, read_buffer, BUFFER_SIZE);
-	while (n_bytes > 0 && *buffer)
+	while (n_bytes > 0)
 	{
-		join_and_free(buffer, read_buffer, n_bytes);
-		if (is_newline(read_buffer, n_bytes) && *buffer)
+		*buffer = join_and_free(*buffer, read_buffer, n_bytes);
+		if (is_newline(read_buffer, n_bytes))
 		{
 			free(read_buffer);
 			return (0);
@@ -66,12 +64,14 @@ static int	read_file(int fd, char **buffer)
 		n_bytes = read(fd, read_buffer, BUFFER_SIZE);
 	}
 	free(read_buffer);
-	if (n_bytes == 0 && *buffer && **buffer)
+	if (n_bytes == 0 && **buffer != 0)
 		return (1);
+	free (*buffer);
+	*buffer = NULL;
 	return (2);
 }
 
-static char	*get_line(char *buffer)
+char	*get_linex(char *buffer)
 {
 	char	*result;
 	size_t	len;
@@ -94,7 +94,7 @@ static char	*get_line(char *buffer)
 	return (result);
 }
 
-static char	*trim_read_line(char *buffer)
+char	*trim_read_line(char *buffer)
 {
 	char	*new_buffer;
 	size_t	i;
@@ -110,20 +110,4 @@ static char	*trim_read_line(char *buffer)
 	ft_strncpy(new_buffer, &buffer[i + 1], len);
 	free (buffer);
 	return (new_buffer);
-}
-
-int main(void)
-{
-	int fd;
-	char *line;
-
-	fd = open("hola", O_RDONLY);
-	line = get_next_line(fd);
-	while (line != NULL)
-	{
-		printf("Line: %s", line);	
-		free (line);
-		line = get_next_line(fd);
-	}
-	printf("Line: %s", line);	
 }
