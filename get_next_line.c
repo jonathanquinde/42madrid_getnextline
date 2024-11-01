@@ -34,14 +34,15 @@ char	*get_next_line(int fd)
 	if (!(is_newline(buffer, ft_strlen(buffer))))
 		read_status = read_file(fd, &buffer);
 	if (read_status == 2)
-		return (free (buffer), buffer = NULL);
+	{
+		free (buffer);
+		return (buffer = NULL);
+	}
 	result = get_line(buffer);
 	if (read_status == 1)
-	{
 		*buffer = 0;
-		return (result);
-	}
-	buffer = trim_read_line(buffer);
+	else 
+		buffer = trim_read_line(buffer);
 	return (result);
 }
 
