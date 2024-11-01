@@ -15,7 +15,7 @@
 
 static int	read_file(int fd, char	**buffer);
 static char	*get_line(char **buffer);
-static char	*trim_read_line(char *buffer);
+void		trim_read_line(char **buffer);
 
 char	*get_next_line(int fd)
 {
@@ -42,7 +42,7 @@ char	*get_next_line(int fd)
 	if (read_status == 1)
 		*buffer = 0;
 	else 
-		buffer = trim_read_line(buffer);
+		trim_read_line(&buffer);
 	return (result);
 }
 
@@ -92,20 +92,26 @@ static char	*get_line(char **buffer)
 	return (result);
 }
 
-static char	*trim_read_line(char *buffer)
+void	trim_read_line(char **buffer)
 {
 	char	*new_buffer;
 	size_t	i;
 	size_t	len;
 
 	i = 0;
-	while (buffer[i] != '\n')
+	while ((*buffer)[i] != '\n')
 		i++;
-	len = ft_strlen(&buffer[i + 1]);
+	len = ft_strlen(&((*buffer)[i + 1]));
 	new_buffer = malloc(len + 1);
-	ft_strncpy(new_buffer, &buffer[i + 1], len);
-	free (buffer);
-	return (new_buffer);
+	if (new_buffer == NULL)
+	{
+		free (*buffer);
+		*buffer = NULL;
+		return ;
+	}
+	ft_strncpy(new_buffer, &((*buffer)[i + 1]), len);
+	free (*buffer);
+	*buffer = new_buffer;
 }
 
 int main(void)
