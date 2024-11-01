@@ -81,26 +81,14 @@ static char	*get_line(char *buffer)
 	len = 0;
 	while (buffer[len] != '\n' && buffer[len])
 		len++;
-	if (buffer[len] == 0)
-	{
-		result = malloc(len + 1);
-		if (result == NULL)
-		{
-			free (buffer);
-			buffer = NULL;
-			return (NULL);
-		}
-		ft_strncpy(result, buffer, len);
-		return (result);
-	}
-	result = malloc(len + 2);
+	result = malloc(len + 1 + (buffer[len] == '\n'));
 	if (result == NULL)
 	{
-			free (buffer);
-			buffer = NULL;
-			return (NULL);
+		free (buffer);
+		buffer = NULL;
+		return (NULL);
 	}
-	ft_strncpy(result, buffer, len + 1);
+	ft_strncpy(result, buffer, len + (buffer[len] == '\n'));
 	return (result);
 }
 
