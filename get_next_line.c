@@ -77,8 +77,6 @@ static char	*get_line(char *buffer)
 	char	*result;
 	size_t	len;
 
-	if (buffer == NULL)
-		return (NULL);
 	len = 0;
 	while (buffer[len] != '\n' && buffer[len])
 		len++;
@@ -102,10 +100,8 @@ static char	*trim_read_line(char *buffer)
 	size_t	len;
 
 	i = 0;
-	while (buffer[i] != '\n' && buffer[i])
+	while (buffer[i] != '\n')
 		i++;
-	if (!buffer[i])
-		return (buffer);
 	len = ft_strlen(&buffer[i + 1]);
 	new_buffer = malloc(len + 1);
 	ft_strncpy(new_buffer, &buffer[i + 1], len);
