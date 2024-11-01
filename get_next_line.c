@@ -58,7 +58,7 @@ static int	read_file(int fd, char **buffer)
 	n_bytes = read(fd, read_buffer, BUFFER_SIZE);
 	while (n_bytes > 0 && *buffer)
 	{
-		if (!join_and_free(buffer, read_buffer, n_bytes));
+		if (!join_and_free(buffer, read_buffer, n_bytes))
 			return (2);
 		if (is_newline(read_buffer, n_bytes) && *buffer)
 		{
@@ -88,7 +88,7 @@ static char	*get_line(char **buffer)
 		*buffer = NULL;
 		return (NULL);
 	}
-	ft_strncpy(result, buffer, len + ((*buffer)[len] == '\n'));
+	ft_strncpy(result, *buffer, len + ((*buffer)[len] == '\n'));
 	return (result);
 }
 
