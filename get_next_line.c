@@ -58,7 +58,8 @@ static int	read_file(int fd, char **buffer)
 	n_bytes = read(fd, read_buffer, BUFFER_SIZE);
 	while (n_bytes > 0 && *buffer)
 	{
-		join_and_free(buffer, read_buffer, n_bytes);
+		if (!join_and_free(buffer, read_buffer, n_bytes));
+			return (2);
 		if (is_newline(read_buffer, n_bytes) && *buffer)
 		{
 			free(read_buffer);
