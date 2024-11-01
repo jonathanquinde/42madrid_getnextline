@@ -14,7 +14,7 @@
 #include <stdio.h>
 
 static int	read_file(int fd, char	**buffer);
-static char	*get_line(char *buffer);
+static char	*get_line(char **buffer);
 static char	*trim_read_line(char *buffer);
 
 char	*get_next_line(int fd)
@@ -38,7 +38,7 @@ char	*get_next_line(int fd)
 		free (buffer);
 		return (buffer = NULL);
 	}
-	result = get_line(buffer);
+	result = get_line(&buffer);
 	if (read_status == 1)
 		*buffer = 0;
 	else 
@@ -73,22 +73,22 @@ static int	read_file(int fd, char **buffer)
 	return (2);
 }
 
-static char	*get_line(char *buffer)
+static char	*get_line(char **buffer)
 {
 	char	*result;
 	size_t	len;
 
 	len = 0;
-	while (buffer[len] != '\n' && buffer[len])
+	while ((*buffer)[len] != '\n' && (*buffer)[len])
 		len++;
-	result = malloc(len + 1 + (buffer[len] == '\n'));
+	result = malloc(len + 1 + ((*buffer)[len] == '\n'));
 	if (result == NULL)
 	{
-		free (buffer);
-		buffer = NULL;
+		free (*buffer);
+		*buffer = NULL;
 		return (NULL);
 	}
-	ft_strncpy(result, buffer, len + (buffer[len] == '\n'));
+	ft_strncpy(result, buffer, len + ((*buffer)[len] == '\n'));
 	return (result);
 }
 
