@@ -83,12 +83,22 @@ static char	*get_line(char *buffer)
 	if (buffer[len] == 0)
 	{
 		result = malloc(len + 1);
+		if (result == NULL)
+		{
+			free (buffer);
+			buffer = NULL;
+			return (NULL);
+		}
 		ft_strncpy(result, buffer, len);
 		return (result);
 	}
 	result = malloc(len + 2);
 	if (result == NULL)
-		return (NULL);
+	{
+			free (buffer);
+			buffer = NULL;
+			return (NULL);
+	}
 	ft_strncpy(result, buffer, len + 1);
 	return (result);
 }
