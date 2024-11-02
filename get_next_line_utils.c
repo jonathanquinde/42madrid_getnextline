@@ -22,17 +22,14 @@ int	join_and_free(char **buffer, char *read_buffer, size_t n_bytes)
 	buffer_len = ft_strlen(*buffer);
 	new_buffer = malloc(buffer_len + n_bytes + 1);
 	if (new_buffer == NULL)
+	{
+		free (read_buffer);
 		return (0);
+	}
 	while (i < buffer_len)
-	{
-		new_buffer[i] = (*buffer)[i];
-		i++;
-	}
+		new_buffer[i++] = (*buffer)[i];
 	while (i - buffer_len < n_bytes)
-	{
-		new_buffer[i] = read_buffer[i - buffer_len];
-		i++;
-	}
+		new_buffer[i++] = read_buffer[i - buffer_len];
 	new_buffer[i] = 0;
 	free (*buffer);
 	*buffer = new_buffer;
