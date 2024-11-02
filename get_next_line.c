@@ -68,9 +68,9 @@ static int	read_file(int fd, char **buffer)
 		n_bytes = read(fd, read_buffer, BUFFER_SIZE);
 	}
 	free(read_buffer);
-	if (n_bytes == 0 && *buffer && **buffer)
-		return (1);
-	return (2);
+	if (n_bytes == -1 || **buffer == 0)
+		return (2);
+	return (1);
 }
 
 static char	*get_line(char **buffer)
@@ -119,13 +119,13 @@ int main(void)
 	int fd;
 	char *line;
 
-	fd = open("hola", O_RDONLY);
+	fd = open("hola.txt", O_RDONLY);
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
-		printf("Line: %s", line);	
+		//printf("Line: %s", line);	
 		free (line);
 		line = get_next_line(fd);
 	}
-	printf("Line: %s", line);	
+	//printf("\nLine: %s", line);	
 }
