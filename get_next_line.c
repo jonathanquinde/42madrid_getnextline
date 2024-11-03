@@ -15,7 +15,7 @@
 
 static int	read_file(int fd, char	**buffer);
 static char	*get_line(char **buffer);
-void		trim_read_line(char **buffer);
+void		trim_read_line(char **buffer, char **result);
 
 char	*get_next_line(int fd)
 {
@@ -42,7 +42,7 @@ char	*get_next_line(int fd)
 	if (read_status == 1)
 		*buffer = 0;
 	else 
-		trim_read_line(&buffer);
+		trim_read_line(&buffer, &result);
 	return (result);
 }
 
@@ -92,7 +92,7 @@ static char	*get_line(char **buffer)
 	return (result);
 }
 
-void	trim_read_line(char **buffer)
+void	trim_read_line(char **buffer, char **result)
 {
 	char	*new_buffer;
 	size_t	i;
@@ -107,6 +107,8 @@ void	trim_read_line(char **buffer)
 	{
 		free (*buffer);
 		*buffer = NULL;
+		free (*result);
+		*result = NULL;
 		return ;
 	}
 	ft_strncpy(new_buffer, &((*buffer)[i + 1]), len);
