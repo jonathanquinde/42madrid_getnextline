@@ -6,7 +6,7 @@
 /*   By: jquinde- < jquinde-@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 15:48:37 by jquinde-          #+#    #+#             */
-/*   Updated: 2024/11/01 20:10:34 by jquinde-         ###   ########.fr       */
+/*   Updated: 2024/11/05 14:08:17 by jquinde-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,17 @@ int	join_and_free(char **buffer, char *read_buffer, size_t n_bytes)
 	buffer_len = ft_strlen(*buffer);
 	new_buffer = malloc(buffer_len + n_bytes + 1);
 	if (new_buffer == NULL)
-	{
-		free (read_buffer);
 		return (0);
-	}
 	while (i < buffer_len)
-		new_buffer[i++] = (*buffer)[i];
+	{
+		new_buffer[i] = (*buffer)[i];
+		i++;
+	}
 	while (i - buffer_len < n_bytes)
-		new_buffer[i++] = read_buffer[i - buffer_len];
+	{
+		new_buffer[i] = read_buffer[i - buffer_len];
+		i++;
+	}
 	new_buffer[i] = 0;
 	free (*buffer);
 	*buffer = new_buffer;

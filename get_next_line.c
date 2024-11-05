@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
 static int	read_file(int fd, char	**buffer);
 static char	*get_line(char **buffer);
@@ -41,7 +40,7 @@ char	*get_next_line(int fd)
 	result = get_line(&buffer);
 	if (read_status == 1)
 		*buffer = 0;
-	else 
+	else
 		trim_read_line(&buffer, &result);
 	return (result);
 }
@@ -59,7 +58,10 @@ static int	read_file(int fd, char **buffer)
 	while (n_bytes > 0 && *buffer)
 	{
 		if (!join_and_free(buffer, read_buffer, n_bytes))
+		{
+			free (read_buffer);
 			return (2);
+		}
 		if (is_newline(read_buffer, n_bytes) && *buffer)
 		{
 			free(read_buffer);
