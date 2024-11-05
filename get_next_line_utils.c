@@ -6,7 +6,7 @@
 /*   By: jquinde- < jquinde-@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 15:48:37 by jquinde-          #+#    #+#             */
-/*   Updated: 2024/11/05 14:08:17 by jquinde-         ###   ########.fr       */
+/*   Updated: 2024/11/05 17:34:38 by jquinde-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	join_and_free(char **buffer, char *read_buffer, size_t n_bytes)
 	buffer_len = ft_strlen(*buffer);
 	new_buffer = malloc(buffer_len + n_bytes + 1);
 	if (new_buffer == NULL)
-		return (0);
+		return (1);
 	while (i < buffer_len)
 	{
 		new_buffer[i] = (*buffer)[i];
@@ -36,7 +36,7 @@ int	join_and_free(char **buffer, char *read_buffer, size_t n_bytes)
 	new_buffer[i] = 0;
 	free (*buffer);
 	*buffer = new_buffer;
-	return (1);
+	return (0);
 }
 
 void	ft_strncpy(char *dest, char *src, size_t n)

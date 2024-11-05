@@ -54,7 +54,7 @@ static int	read_file(int fd, char **buffer)
 	n_bytes = read(fd, read_buffer, BUFFER_SIZE);
 	while (n_bytes > 0 && *buffer)
 	{
-		if (!join_and_free(buffer, read_buffer, n_bytes))
+		if (join_and_free(buffer, read_buffer, n_bytes))
 		{
 			free (read_buffer);
 			return (READ_ERROR);
