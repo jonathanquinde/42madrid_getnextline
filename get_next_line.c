@@ -26,7 +26,7 @@ char	*get_next_line(int fd)
 	if (buffer == NULL)
 	{
 		buffer = empty_byte();
-		if (buffer == NULL);
+		if (buffer == NULL)
 			return (NULL);
 	}
 	read_status = READ_SUCCESS;
