@@ -18,6 +18,8 @@
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1
 # endif
+# define READ_ERROR 1
+# define READ_SUCCESS 2
 
 char	*get_next_line(int fd);
 int		is_newline(char *read_buffer, size_t len);

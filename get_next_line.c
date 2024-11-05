@@ -11,9 +11,10 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
 
 static int	read_file(int fd, char	**buffer);
-static char	*get_line(char **buffer);
+static char	*get_and_trim(char *buffer);
 
 char	*get_next_line(int fd)
 {
@@ -31,16 +32,17 @@ char	*get_next_line(int fd)
 	read_status = 0;
 	if (!(is_newline(buffer, ft_strlen(buffer))))
 		read_status = read_file(fd, &buffer);
-	if (read_status == 2)
+	if (read_status == READ_SUCCESS)
 	{
-		free (buffer);
-		return (buffer = NULL);
+		result = get_and_trim(buffer);
+		if (result != NULL)
+			return (result);
 	}
-	result = get_line(&buffer);
-	return (result);
+	free (buffer);
+	buffer = NULL;
+	return (NULL);
 }
 
-//0=quedan bytes; 1=ultima linea; 2=error(mallloc, read)
 static int	read_file(int fd, char **buffer)
 {
 	char	*read_buffer;
@@ -48,51 +50,46 @@ static int	read_file(int fd, char **buffer)
 
 	read_buffer = malloc(BUFFER_SIZE);
 	if (read_buffer == NULL)
-		return (2);
+		return (READ_ERROR);
 	n_bytes = read(fd, read_buffer, BUFFER_SIZE);
 	while (n_bytes > 0 && *buffer)
 	{
 		if (!join_and_free(buffer, read_buffer, n_bytes))
 		{
 			free (read_buffer);
-			return (2);
+			return (READ_ERROR);
 		}
 		if (is_newline(read_buffer, n_bytes) && *buffer)
 		{
 			free(read_buffer);
-			return (0);
+			return (READ_SUCCESS);
 		}
 		n_bytes = read(fd, read_buffer, BUFFER_SIZE);
 	}
 	free(read_buffer);
 	if (n_bytes == -1 || **buffer == 0)
-		return (2);
-	return (1);
+		return (READ_ERROR);
+	return (READ_SUCCESS);
 }
 
-static char	*get_line(char **buffer)
+static char	*get_and_trim(char *buffer)
 {
 	char	*result;
 	size_t	i;
 	size_t	len;
 
 	i = 0;
-	while ((*buffer)[i] != '\n' && (*buffer)[i])
+	while (buffer[i] != '\n' && buffer[i])
 		i++;
-	result = malloc(i + 1 + ((*buffer)[i] == '\n'));
+	result = malloc(i + 1 + (buffer[i] == '\n'));
 	if (result == NULL)
-	{
-		free (*buffer);
-		*buffer = NULL;
 		return (NULL);
-	}
-	ft_strncpy(result, *buffer, i + ((*buffer)[i] == '\n'));
-	len = ft_strlen((*buffer) + i + ((*buffer)[i] == '\n'));
-	ft_strncpy(*buffer, (*buffer) + i + ((*buffer)[i] == '\n'), len);
+	ft_strncpy(result, buffer, i + (buffer[i] == '\n'));
+	len = ft_strlen(buffer + i + (buffer[i] == '\n'));
+	ft_strncpy(buffer, buffer + i + (buffer[i] == '\n'), len);
 	return (result);
 }
 
-/*
 int main(void)
 {
 	int fd;
@@ -102,9 +99,9 @@ int main(void)
 	line = get_next_line(fd);
 	while (line != NULL)
 	{
-		//printf("Line: %s", line);	
+		printf("Line: %s", line);	
 		free (line);
 		line = get_next_line(fd);
 	}
-	//printf("\nLine: %s", line);	
-}*/
+	printf("\nLine: %s", line);	
+}
