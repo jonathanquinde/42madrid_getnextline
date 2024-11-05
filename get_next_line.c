@@ -52,14 +52,14 @@ static int	read_file(int fd, char **buffer)
 	if (read_buffer == NULL)
 		return (READ_ERROR);
 	n_bytes = read(fd, read_buffer, BUFFER_SIZE);
-	while (n_bytes > 0 && *buffer)
+	while (n_bytes > 0)
 	{
 		if (join_and_free(buffer, read_buffer, n_bytes))
 		{
 			free (read_buffer);
 			return (READ_ERROR);
 		}
-		if (is_newline(read_buffer, n_bytes) && *buffer)
+		if (is_newline(read_buffer, n_bytes))
 		{
 			free(read_buffer);
 			return (READ_SUCCESS);
