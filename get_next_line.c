@@ -29,7 +29,7 @@ char	*get_next_line(int fd)
 			return (NULL);
 		*buffer = 0;
 	}
-	read_status = 0;
+	read_status = READ_SUCCESS;
 	if (!(is_newline(buffer, ft_strlen(buffer))))
 		read_status = read_file(fd, &buffer);
 	if (read_status == READ_SUCCESS)
@@ -89,7 +89,7 @@ static char	*get_and_trim(char *buffer)
 	ft_strncpy(buffer, buffer + i + (buffer[i] == '\n'), len);
 	return (result);
 }
-
+/*
 int main(void)
 {
 	int fd;
@@ -105,3 +105,4 @@ int main(void)
 	}
 	printf("\nLine: %s", line);	
 }
+*/
