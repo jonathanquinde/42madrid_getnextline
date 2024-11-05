@@ -15,6 +15,7 @@
 
 static int	read_file(int fd, char	**buffer);
 static char	*get_and_trim(char *buffer);
+int			join_and_free(char **buffer, char *read_buffer, size_t n_bytes);
 
 char	*get_next_line(int fd)
 {
@@ -24,10 +25,9 @@ char	*get_next_line(int fd)
 
 	if (buffer == NULL)
 	{
-		buffer = malloc(1);
-		if (buffer == NULL)
+		buffer = empty_byte();
+		if (buffer == NULL);
 			return (NULL);
-		*buffer = 0;
 	}
 	read_status = READ_SUCCESS;
 	if (!(is_newline(buffer, ft_strlen(buffer))))
@@ -89,6 +89,29 @@ static char	*get_and_trim(char *buffer)
 	ft_strncpy(buffer, buffer + i + (buffer[i] == '\n'), len);
 	return (result);
 }
+
+int	join_and_free(char **buffer, char *read_buffer, size_t n_bytes)
+{
+	char	*new_buffer;
+	size_t	buffer_len;
+	size_t	i;
+
+	i = 0;
+	buffer_len = ft_strlen(*buffer);
+	new_buffer = malloc(buffer_len + n_bytes + 1);
+	if (new_buffer == NULL)
+		return (1);
+	while (i < buffer_len)
+	{
+		new_buffer[i] = (*buffer)[i];
+		i++;
+	}
+	ft_strncpy(&new_buffer[i], read_buffer, n_bytes);
+	free (*buffer);
+	*buffer = new_buffer;
+	return (0);
+}
+
 /*
 int main(void)
 {

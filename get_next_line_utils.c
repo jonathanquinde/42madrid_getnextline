@@ -6,38 +6,12 @@
 /*   By: jquinde- < jquinde-@student.42madrid.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 15:48:37 by jquinde-          #+#    #+#             */
-/*   Updated: 2024/11/05 17:34:38 by jquinde-         ###   ########.fr       */
+/*   Updated: 2024/11/05 18:04:01 by jquinde-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	join_and_free(char **buffer, char *read_buffer, size_t n_bytes)
-{
-	char	*new_buffer;
-	size_t	buffer_len;
-	size_t	i;
-
-	i = 0;
-	buffer_len = ft_strlen(*buffer);
-	new_buffer = malloc(buffer_len + n_bytes + 1);
-	if (new_buffer == NULL)
-		return (1);
-	while (i < buffer_len)
-	{
-		new_buffer[i] = (*buffer)[i];
-		i++;
-	}
-	while (i - buffer_len < n_bytes)
-	{
-		new_buffer[i] = read_buffer[i - buffer_len];
-		i++;
-	}
-	new_buffer[i] = 0;
-	free (*buffer);
-	*buffer = new_buffer;
-	return (0);
-}
 
 void	ft_strncpy(char *dest, char *src, size_t n)
 {
@@ -73,4 +47,14 @@ int	is_newline(char *str, size_t len)
 		i++;
 	}
 	return (0);
+}
+
+char	*empty_byte(void)
+{
+	char	*str;
+
+	str = malloc(1);
+	if (str != NULL)
+		*str = 0;
+	return (str);
 }
