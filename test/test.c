@@ -1,35 +1,26 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jquinde- < jquinde-@student.42madrid.co    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/10 16:37:48 by jquinde-          #+#    #+#             */
-/*   Updated: 2024/11/10 17:00:12 by jquinde-         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include <stdlib.h>
+#include "test.h"
 
-#include "get_next_line.h"
 
-int test(void)
+void *xmalloc(size_t size)
 {
-	int fd;
-	char *line;
-
-	fd = open("hola.txt", O_RDONLY);
-	line = get_next_line(fd);
-	while (line != NULL)
-	{
-		printf("Line: %s", line);	
-		free (line);
-		line = get_next_line(fd);
-	}
-	close (fd);
+	int fail_after = 7;
+	static int num_allocs = 0;
+	
+    if (fail_after >= 0 && num_allocs >= fail_after)
+		return (0);
+	num_allocs++;
+    return malloc(size);
 }
 
+/*
+1- calloc
+2- raed_buffer
+3- strjoin
+4- result
 
-int main(void)
-{
+5- read_buffer
+6- result
 
-}
+7- read_buffer
+*/

@@ -112,7 +112,7 @@ int	join_and_free(char **buffer, char *read_buffer, size_t n_bytes)
 	return (0);
 }
 
-/*
+
 int main(void)
 {
 	int fd;
@@ -128,4 +128,3 @@ int main(void)
 	}
 	printf("\nLine: %s", line);	
 }
-*/

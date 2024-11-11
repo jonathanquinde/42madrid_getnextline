@@ -111,21 +111,3 @@ int	join_and_free(char **buffer, char *read_buffer, size_t n_bytes)
 	*buffer = new_buffer;
 	return (0);
 }
-
-/*
-int main(void)
-{
-	int fd;
-	char *line;
-
-	fd = open("hola.txt", O_RDONLY);
-	line = get_next_line(fd);
-	while (line != NULL)
-	{
-		printf("Line: %s", line);	
-		free (line);
-		line = get_next_line(fd);
-	}
-	printf("\nLine: %s", line);	
-}
-*/

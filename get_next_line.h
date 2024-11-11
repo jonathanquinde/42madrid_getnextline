@@ -16,10 +16,12 @@
 # include <fcntl.h>
 # include <stdlib.h>
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
+#  define BUFFER_SIZE 10
 # endif
 # define READ_ERROR 1
 # define READ_SUCCESS 2
+// # include "test.h"
+// # define malloc(x) xmalloc(x)
 
 char	*get_next_line(int fd);
 int		is_newline(char *read_buffer, size_t len);
